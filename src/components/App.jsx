@@ -8,10 +8,12 @@ import { Footer } from "./Footer.jsx";
 function App() {
   const [score, setScore] = useState(0);
   console.log("app has been called");
+  let cardNumber = parseInt(prompt("How many cards?"));
+  if (cardNumber > 18) cardNumber = 18;
   return (
     <div className="body">
       <Header></Header>
-      <Cards></Cards>
+      <Cards number={cardNumber}></Cards>
       <Footer></Footer>
     </div>
   );
