@@ -1,3 +1,9 @@
 * {
   margin: 0;
 }
+svg {
+  max-width: 100%;
+}
+.footer svg {
+  width: 30px;
+}
