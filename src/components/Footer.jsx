@@ -2,7 +2,7 @@ function Footer() {
   return (
     <div className="footer">
       <p>Made by Revanthyr</p>
-      <a href="github.com/revanthyr">
+      <a href="https://github.com/revanthyr" target="_blank">
         <svg viewBox="0 0 128 128">
           <g fill="#181616">
             <path
