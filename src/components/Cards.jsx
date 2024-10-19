@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { getRandomNumber } from "./randomNum";
+import { getRandomNumber, arrayWithoutDuplicates } from "./randomNum";
 function Cards({ number }) {
   const [pokemonArray, setPokemonArray] = useState([]);
   let newArray = [];
@@ -12,30 +12,32 @@ function Cards({ number }) {
         return response.json();
       })
       .then((json) => {
+        // make an array of number random nums, then fetch with those ez pz
+        const fetchNumbers = arrayWithoutDuplicates(number);
+        // i want to create an array of length num, that doesnt have any duplicates.
         console.log("JSON", json);
         const fetchPromises = [];
-        for (let i = number; i > 0; i--) {
+        fetchNumbers.map((current) => {
           fetchPromises.push(
             fetch(
-              json.pokemon_entries[
-                getRandomNumber(1, 201)
-              ].pokemon_species.url.replace("-species", "")
+              json.pokemon_entries[current].pokemon_species.url.replace(
+                "-species",
+                ""
+              )
             )
           );
-        }
+        });
+        // for (let i = number; i > 0; i--) {
+        //   fetchPromises.push(
+        //     fetch(
+        //       json.pokemon_entries[
+        //         getRandomNumber(1, 201)
+        //       ].pokemon_species.url.replace("-species", "")
+        //     )
+        //   );
+        // }
 
         return Promise.all(fetchPromises);
-        //  json.results.map((currentPokemon) => {
-        //   return fetch(currentPokemon.url)
-        //     .then((response) => response.json())
-        //     .then((json) => {
-        //       newArray.push({
-        //         name: json.name,
-        //         id: crypto.randomUUID(),
-        //         img: json.sprites.front_default,
-        //       });
-        //     });
-        // });
       })
       .then((responses) => {
         const jsonRequests = [];
@@ -47,6 +49,7 @@ function Cards({ number }) {
       })
       .then((pokemons) => {
         console.log(pokemons);
+        newArray = [];
         pokemons.map((current) => {
           newArray.push({
             name: current.name,
@@ -64,16 +67,26 @@ function Cards({ number }) {
     };
   }, []);
 
+  function randomizePokemon(array) {
+    const newPokemonArray = [...array];
+    newPokemonArray.sort(() => {
+      return 0.5 - Math.random();
+    });
+    setPokemonArray(newPokemonArray);
+  }
   console.log(pokemonArray, "pokemonarray before render");
   return (
-    <div className="cards-container">
-      {console.log("HEY IM RENDERING FR FR", pokemonArray.length)}
-      {pokemonArray.map((curr) => {
-        console.log("hey im rendering");
-        return (
-          <Card text={curr.name} key={curr.id} imgSource={curr.img}></Card>
-        );
-      })}
+    <div>
+      <button onClick={() => randomizePokemon(pokemonArray)}>Randomize</button>
+      <div className="cards-container">
+        {console.log("HEY IM RENDERING FR FR", pokemonArray.length)}
+        {pokemonArray.map((curr) => {
+          console.log("hey im rendering");
+          return (
+            <Card text={curr.name} key={curr.id} imgSource={curr.img}></Card>
+          );
+        })}
+      </div>
     </div>
   );
 }

@@ -1,10 +1,10 @@
-function Header() {
+function Header({ score }) {
   return (
     <div className="header">
       <h1>Memory Game</h1>
       <p>
-        Score : placeHolder <br />
-        Best Score : placeHolder
+        Score : {score} <br />
+        Best Score : {score}
       </p>
     </div>
   );

@@ -12,7 +12,7 @@ function App() {
   if (cardNumber > 18) cardNumber = 18;
   return (
     <div className="body">
-      <Header></Header>
+      <Header score={score}></Header>
       <Cards number={cardNumber}></Cards>
       <Footer></Footer>
     </div>
