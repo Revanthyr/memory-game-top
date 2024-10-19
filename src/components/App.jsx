@@ -1,5 +1,5 @@
-import { useState } from "react";
-
+import { useEffect, useState } from "react";
+import { Difficulty } from "./Difficulty.jsx";
 import "../styles/index.css";
 import { Header } from "./Header.jsx";
 import { Cards } from "./Cards.jsx";
@@ -7,13 +7,22 @@ import { Cards } from "./Cards.jsx";
 import { Footer } from "./Footer.jsx";
 function App() {
   const [score, setScore] = useState(0);
+  const [cardNumber, setCardNumber] = useState(0);
+
   console.log("app has been called");
-  let cardNumber = parseInt(prompt("How many cards?"));
-  if (cardNumber > 18) cardNumber = 18;
+
+  if (cardNumber == 0) {
+    return <Difficulty setCardNumber={setCardNumber}></Difficulty>;
+  }
   return (
     <div className="body">
       <Header score={score}></Header>
-      <Cards number={cardNumber}></Cards>
+      <Cards
+        number={cardNumber}
+        score={score}
+        setScore={setScore}
+        setCardNumber={setCardNumber}
+      ></Cards>
       <Footer></Footer>
     </div>
   );

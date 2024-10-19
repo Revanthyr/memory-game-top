@@ -1,8 +1,12 @@
 import { useEffect, useState } from "react";
-import { getRandomNumber, arrayWithoutDuplicates } from "./randomNum";
-function Cards({ number }) {
+import { arrayWithoutDuplicates } from "./randomNum";
+import { LoseScreen } from "./LoseScreen.jsx";
+function Cards({ number, score, setScore, setCardNumber }) {
   const [pokemonArray, setPokemonArray] = useState([]);
+  const [clickedPokemon, setClickedPokemon] = useState([]);
+  const [modalIsShown, setModalIsShown] = useState(false);
   let newArray = [];
+
   useEffect(() => {
     console.log("USE EFFECT HAS RUN");
     newArray = [];
@@ -12,9 +16,8 @@ function Cards({ number }) {
         return response.json();
       })
       .then((json) => {
-        // make an array of number random nums, then fetch with those ez pz
         const fetchNumbers = arrayWithoutDuplicates(number);
-        // i want to create an array of length num, that doesnt have any duplicates.
+
         console.log("JSON", json);
         const fetchPromises = [];
         fetchNumbers.map((current) => {
@@ -27,15 +30,6 @@ function Cards({ number }) {
             )
           );
         });
-        // for (let i = number; i > 0; i--) {
-        //   fetchPromises.push(
-        //     fetch(
-        //       json.pokemon_entries[
-        //         getRandomNumber(1, 201)
-        //       ].pokemon_species.url.replace("-species", "")
-        //     )
-        //   );
-        // }
 
         return Promise.all(fetchPromises);
       })
@@ -58,6 +52,7 @@ function Cards({ number }) {
           });
         });
         console.log(newArray, "newArray before setting");
+        // setModalIsShown(false);
         setPokemonArray(newArray);
       });
 
@@ -65,7 +60,7 @@ function Cards({ number }) {
       setPokemonArray([]);
       console.log("cleaned up the cards container");
     };
-  }, []);
+  }, [modalIsShown]);
 
   function randomizePokemon(array) {
     const newPokemonArray = [...array];
@@ -75,6 +70,28 @@ function Cards({ number }) {
     setPokemonArray(newPokemonArray);
   }
   console.log(pokemonArray, "pokemonarray before render");
+
+  function cardOnClick(name) {
+    // card on click will take an arg
+    // if that arg isnt part of the array, etc....
+    if (clickedPokemon.includes(name)) {
+      setModalIsShown(true);
+    } else {
+      setScore(score + 1);
+      let placeholder = [...clickedPokemon];
+      placeholder.push(name);
+      setClickedPokemon(placeholder);
+      randomizePokemon(pokemonArray);
+    }
+  }
+  if (modalIsShown) {
+    return (
+      <LoseScreen
+        setCardNumber={setCardNumber}
+        setModalIsShown={setModalIsShown}
+      ></LoseScreen>
+    );
+  }
   return (
     <div>
       <button onClick={() => randomizePokemon(pokemonArray)}>Randomize</button>
@@ -83,7 +100,12 @@ function Cards({ number }) {
         {pokemonArray.map((curr) => {
           console.log("hey im rendering");
           return (
-            <Card text={curr.name} key={curr.id} imgSource={curr.img}></Card>
+            <Card
+              text={curr.name}
+              key={curr.id}
+              imgSource={curr.img}
+              onClickHandle={cardOnClick}
+            ></Card>
           );
         })}
       </div>
@@ -91,12 +113,9 @@ function Cards({ number }) {
   );
 }
 
-//
-//
-//
-function Card({ text, imgSource }) {
+function Card({ text, imgSource, onClickHandle }) {
   return (
-    <div className="card">
+    <div className="card" onClick={() => onClickHandle(text)}>
       <img src={imgSource} alt="pokemon" />
       <p>{text}</p>
     </div>
