@@ -2,7 +2,15 @@ import { useEffect, useState } from "react";
 import { arrayWithoutDuplicates } from "./randomNum";
 import { LoseScreen } from "./LoseScreen.jsx";
 import { WinScreen } from "./WinScreen.jsx";
-function Cards({ number, score, setScore, setCardNumber, cardNumber }) {
+function Cards({
+  number,
+  score,
+  setScore,
+  setCardNumber,
+  cardNumber,
+  bestScore,
+  setBestScore,
+}) {
   const [pokemonArray, setPokemonArray] = useState([]);
   const [clickedPokemon, setClickedPokemon] = useState([]);
   const [modalIsShown, setModalIsShown] = useState(false);
@@ -69,7 +77,7 @@ function Cards({ number, score, setScore, setCardNumber, cardNumber }) {
     newPokemonArray.sort(() => {
       return 0.5 - Math.random();
     });
-    // every array element should move to a new place...
+
     setPokemonArray(newPokemonArray);
   }
   console.log(pokemonArray, "pokemonarray before render");
@@ -77,6 +85,9 @@ function Cards({ number, score, setScore, setCardNumber, cardNumber }) {
   function cardOnClick(name) {
     if (clickedPokemon.includes(name)) {
       setModalIsShown(true);
+      if (bestScore < score) {
+        setBestScore(score);
+      }
     } else if (clickedPokemon.length === cardNumber - 1) {
       console.log(clickedPokemon, "CLICKED POKEMON");
       console.log(cardNumber, "CAR NUMEBR");

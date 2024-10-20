@@ -8,21 +8,29 @@ import { Footer } from "./Footer.jsx";
 function App() {
   const [score, setScore] = useState(0);
   const [cardNumber, setCardNumber] = useState(0);
+  const [bestScore, setBestScore] = useState(0);
 
   console.log("app has been called");
 
-  if (cardNumber == 0) {
-    return <Difficulty setCardNumber={setCardNumber}></Difficulty>;
+  if (cardNumber === 0) {
+    return (
+      <Difficulty
+        setCardNumber={setCardNumber}
+        setScore={setScore}
+      ></Difficulty>
+    );
   }
   return (
     <div className="body">
-      <Header score={score}></Header>
+      <Header score={score} bestScore={bestScore}></Header>
       <Cards
         number={cardNumber}
         score={score}
         setScore={setScore}
         setCardNumber={setCardNumber}
         cardNumber={cardNumber}
+        bestScore={bestScore}
+        setBestScore={setBestScore}
       ></Cards>
       <Footer></Footer>
     </div>
