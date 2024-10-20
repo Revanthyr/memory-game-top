@@ -10,5 +10,3 @@ function LoseScreen({ setCardNumber, setModalIsShown }) {
   );
 }
 export { LoseScreen };
-// onClick, it should change state of Cards but not app
-//

@@ -1,10 +1,12 @@
 import { useEffect, useState } from "react";
 import { arrayWithoutDuplicates } from "./randomNum";
 import { LoseScreen } from "./LoseScreen.jsx";
-function Cards({ number, score, setScore, setCardNumber }) {
+import { WinScreen } from "./WinScreen.jsx";
+function Cards({ number, score, setScore, setCardNumber, cardNumber }) {
   const [pokemonArray, setPokemonArray] = useState([]);
   const [clickedPokemon, setClickedPokemon] = useState([]);
   const [modalIsShown, setModalIsShown] = useState(false);
+  const [winScreen, setWinScreen] = useState(false);
   let newArray = [];
 
   useEffect(() => {
@@ -52,30 +54,34 @@ function Cards({ number, score, setScore, setCardNumber }) {
           });
         });
         console.log(newArray, "newArray before setting");
-        // setModalIsShown(false);
         setPokemonArray(newArray);
       });
 
     return () => {
       setPokemonArray([]);
+      setClickedPokemon([]);
       console.log("cleaned up the cards container");
     };
-  }, [modalIsShown]);
+  }, [modalIsShown, winScreen]);
 
   function randomizePokemon(array) {
     const newPokemonArray = [...array];
     newPokemonArray.sort(() => {
       return 0.5 - Math.random();
     });
+    // every array element should move to a new place...
     setPokemonArray(newPokemonArray);
   }
   console.log(pokemonArray, "pokemonarray before render");
 
   function cardOnClick(name) {
-    // card on click will take an arg
-    // if that arg isnt part of the array, etc....
     if (clickedPokemon.includes(name)) {
       setModalIsShown(true);
+    } else if (clickedPokemon.length === cardNumber - 1) {
+      console.log(clickedPokemon, "CLICKED POKEMON");
+      console.log(cardNumber, "CAR NUMEBR");
+      setScore(score + 1);
+      setWinScreen(true);
     } else {
       setScore(score + 1);
       let placeholder = [...clickedPokemon];
@@ -92,6 +98,16 @@ function Cards({ number, score, setScore, setCardNumber }) {
       ></LoseScreen>
     );
   }
+  if (winScreen) {
+    return (
+      <WinScreen
+        setCardNumber={setCardNumber}
+        setWinScreen={setWinScreen}
+        cardNumber={cardNumber}
+      ></WinScreen>
+    );
+  }
+
   return (
     <div>
       <button onClick={() => randomizePokemon(pokemonArray)}>Randomize</button>

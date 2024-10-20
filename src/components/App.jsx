@@ -22,6 +22,7 @@ function App() {
         score={score}
         setScore={setScore}
         setCardNumber={setCardNumber}
+        cardNumber={cardNumber}
       ></Cards>
       <Footer></Footer>
     </div>
