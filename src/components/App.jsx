@@ -31,7 +31,7 @@ function App() {
   }
   const body = document.querySelector("body");
   console.log("test");
-  body.style.backgroundImage = "url(../../public/assets/background.png)";
+  body.style.backgroundImage = "url(/assets/background.png)";
   return (
     <div className="body" onContextMenu={() => handleRightClick()}>
       <Header score={score} bestScore={bestScore}></Header>
