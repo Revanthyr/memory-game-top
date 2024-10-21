@@ -14,7 +14,7 @@ function App() {
     console.log("right click");
     const body = document.querySelector("body");
 
-    body.style.backgroundImage = "url(../../public/assets/rayquaza.png)";
+    body.style.backgroundImage = "url(../public/assets/rayquaza.png)";
   }
   console.log("app has been called");
 
