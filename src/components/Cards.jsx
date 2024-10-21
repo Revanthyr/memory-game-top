@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { arrayWithoutDuplicates } from "./randomNum";
 import { LoseScreen } from "./LoseScreen.jsx";
 import { WinScreen } from "./WinScreen.jsx";
+import { ExtraScreen } from "./ExtraScreen.jsx";
 function Cards({
   number,
   score,
@@ -15,20 +16,18 @@ function Cards({
   const [clickedPokemon, setClickedPokemon] = useState([]);
   const [modalIsShown, setModalIsShown] = useState(false);
   const [winScreen, setWinScreen] = useState(false);
+  const [extraScreen, setExtraScreen] = useState(false);
   let newArray = [];
 
   useEffect(() => {
-    console.log("USE EFFECT HAS RUN");
     newArray = [];
     const pokedex = fetch(` https://pokeapi.co/api/v2/pokedex/4`)
       .then((response) => {
-        console.log("RESPONSE", response);
         return response.json();
       })
       .then((json) => {
         const fetchNumbers = arrayWithoutDuplicates(number);
 
-        console.log("JSON", json);
         const fetchPromises = [];
         fetchNumbers.map((current) => {
           fetchPromises.push(
@@ -48,11 +47,10 @@ function Cards({
         responses.map((current) => {
           jsonRequests.push(current.json());
         });
-        console.log("JSON REQUESTS", jsonRequests);
+
         return Promise.all(jsonRequests);
       })
       .then((pokemons) => {
-        console.log(pokemons);
         newArray = [];
         pokemons.map((current) => {
           newArray.push({
@@ -61,14 +59,13 @@ function Cards({
             img: current.sprites.front_default,
           });
         });
-        console.log(newArray, "newArray before setting");
+
         setPokemonArray(newArray);
       });
 
     return () => {
       setPokemonArray([]);
       setClickedPokemon([]);
-      console.log("cleaned up the cards container");
     };
   }, [modalIsShown, winScreen]);
 
@@ -80,7 +77,6 @@ function Cards({
 
     setPokemonArray(newPokemonArray);
   }
-  console.log(pokemonArray, "pokemonarray before render");
 
   function cardOnClick(name) {
     if (clickedPokemon.includes(name)) {
@@ -88,12 +84,15 @@ function Cards({
       if (bestScore < score) {
         setBestScore(score);
       }
+    } else if (clickedPokemon.length === cardNumber - 1 && cardNumber === 17) {
+      console.log("about to do extra screen");
+      setExtraScreen(true);
     } else if (clickedPokemon.length === cardNumber - 1) {
-      console.log(clickedPokemon, "CLICKED POKEMON");
-      console.log(cardNumber, "CAR NUMEBR");
+      console.log("about to do win screnen");
       setScore(score + 1);
       setWinScreen(true);
     } else {
+      console.log("about to push into array");
       setScore(score + 1);
       let placeholder = [...clickedPokemon];
       placeholder.push(name);
@@ -101,6 +100,7 @@ function Cards({
       randomizePokemon(pokemonArray);
     }
   }
+  console.log("clicked", clickedPokemon);
   if (modalIsShown) {
     return (
       <LoseScreen
@@ -108,6 +108,11 @@ function Cards({
         setModalIsShown={setModalIsShown}
       ></LoseScreen>
     );
+  }
+  if (extraScreen) {
+    console.log("clicked-1", clickedPokemon);
+    let pokemontest = clickedPokemon[15];
+    return <ExtraScreen pokemon={pokemontest}></ExtraScreen>;
   }
   if (winScreen) {
     return (
@@ -123,7 +128,6 @@ function Cards({
     <div>
       <button onClick={() => randomizePokemon(pokemonArray)}>Randomize</button>
       <div className="cards-container">
-        {console.log("HEY IM RENDERING FR FR", pokemonArray.length)}
         {pokemonArray.map((curr) => {
           console.log("hey im rendering");
           return (
