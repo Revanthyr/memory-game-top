@@ -86,6 +86,9 @@ function Cards({
       }
     } else if (clickedPokemon.length === cardNumber - 1 && cardNumber === 17) {
       console.log("about to do extra screen");
+      let placeholder = [...clickedPokemon];
+      placeholder.push(name);
+      setClickedPokemon(placeholder);
       setExtraScreen(true);
     } else if (clickedPokemon.length === cardNumber - 1) {
       console.log("about to do win screnen");
@@ -111,7 +114,7 @@ function Cards({
   }
   if (extraScreen) {
     console.log("clicked-1", clickedPokemon);
-    let pokemontest = clickedPokemon[15];
+    let pokemontest = clickedPokemon[16]; // hard coded value
     return <ExtraScreen pokemon={pokemontest}></ExtraScreen>;
   }
   if (winScreen) {
