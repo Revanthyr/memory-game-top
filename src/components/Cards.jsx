@@ -109,6 +109,7 @@ function Cards({
       <LoseScreen
         setCardNumber={setCardNumber}
         setModalIsShown={setModalIsShown}
+        setScore={setScore}
       ></LoseScreen>
     );
   }
