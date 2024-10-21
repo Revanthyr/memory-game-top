@@ -30,7 +30,7 @@ function App() {
     );
   }
   const body = document.querySelector("body");
-
+  console.log("test");
   body.style.backgroundImage = "url('src/assets/background.png')";
   return (
     <div className="body" onContextMenu={() => handleRightClick()}>
