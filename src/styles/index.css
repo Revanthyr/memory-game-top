@@ -4,7 +4,7 @@
 }
 @font-face {
   font-family: "pixel";
-  src: url("../assets/Pixelify_Sans/static/PixelifySans-Regular.ttf");
+  src: url("public/assets/Pixelify_Sans/static/PixelifySans-Regular.ttf");
 }
 svg {
   max-width: 100%;
@@ -19,7 +19,7 @@ svg {
   width: 100vw;
 }
 body {
-  background-image: url("../assets/background.png");
+  background-image: url("public/assets/background.png");
   background-size: cover;
   background-position-y: 10%;
   font-family: "pixel", sans-serif;

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import Sound from "../assets/main.mp3";
+import Sound from "../../public/assets/main.mp3";
 const happyMusic = new Audio(Sound);
 happyMusic.volume = 0.1;
 function AudioButton() {
