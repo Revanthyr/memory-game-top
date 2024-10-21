@@ -115,7 +115,7 @@ function Cards({
   }
   if (extraScreen) {
     console.log("clicked-1", clickedPokemon);
-    let pokemontest = clickedPokemon[16]; // hard coded value
+    let pokemontest = clickedPokemon[16];
     return <ExtraScreen pokemon={pokemontest}></ExtraScreen>;
   }
   if (winScreen) {
@@ -130,7 +130,6 @@ function Cards({
 
   return (
     <div>
-      <button onClick={() => randomizePokemon(pokemonArray)}>Randomize</button>
       <div className="cards-container">
         {pokemonArray.map((curr) => {
           console.log("hey im rendering");

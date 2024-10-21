@@ -2,9 +2,6 @@ function getRandomNumber(min, max) {
   return Math.floor(Math.random() * (max - min) + min);
 }
 function arrayWithoutDuplicates(length) {
-  // create initial array,
-  // while it has duplicates,
-  // redo values
   let returnArray = [];
   for (let i = length; i > 0; i--) {
     returnArray.push(getRandomNumber(1, 202));
